@@ -3,7 +3,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin'); // Подключае�
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // Чиститу папку Dist перед сборкой
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Плагин для простого копирования файлов
 const MiniCSSExtrackPlugin = require('mini-css-extract-plugin'); // Плагин для CSS что бы сам CSS был отвельным файлом
-const OptimizedCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizedCssAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // Этот и следующий плагин нужны для минификации CSS
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -27,16 +27,27 @@ const optimization = () => {
   return config;
 };
 
+const fileName = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`);
+
+const cssLoaders = (extra) => {
+  const loader = [MiniCSSExtrackPlugin.loader, 'css-loader'];
+
+  if (extra) {
+    loader.push(extra);
+  }
+  return loader;
+};
+
 module.exports = {
   context: path.resolve(__dirname, 'dev'),
   mode: 'development',
   // Entry это объект и она может содержать несколько точек входа
   entry: {
-    main: './static/js/index.js',
+    main: ['@babel/polyfill', './static/js/index.js'],
     analytics: './static/js/analytics.js',
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: fileName('js'),
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
@@ -68,7 +79,7 @@ module.exports = {
       ],
     }),
     new MiniCSSExtrackPlugin({
-      filename: 'style.css',
+      filename: fileName('css'),
     }),
   ],
   // Webpack идет справа на лево
@@ -77,7 +88,15 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [MiniCSSExtrackPlugin.loader, 'css-loader'],
+        use: cssLoaders(),
+      },
+      {
+        test: /\.less$/,
+        use: cssLoaders('less-loader'),
+      },
+      {
+        test: /\.scss$/,
+        use: cssLoaders('sass-loader'),
       },
       {
         test: /\.(png|jpg|svg|gif)$/, // Это нужно для того что бы WebPack умел работать с фалами картинок
@@ -87,6 +106,29 @@ module.exports = {
         test: /\.(ttf|woff|woff2|eot)$/, // Это нужно для того что бы WebPack умел работать со шрифтами
         use: ['file-loader'],
       },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
+          },
+        },
+      },
+      // {
+      //   test: /\.js$/,
+      //   // exclude: path.resolve(__dirname, './node_modules'),
+      //   loader: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: [
+      //         '@babel/preset-env'
+      //       ]
+      //     }
+      //   }
+      // }
     ],
   },
 };

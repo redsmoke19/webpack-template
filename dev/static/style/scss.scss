@@ -1,0 +1,13 @@
+$red: red;
+
+.box2 {
+  box-sizing: border-box;
+  border: 1px solid $red;
+  padding: 10px;
+  h3 {
+    font-size: 55px;
+    border: 2px solid tomato;
+    margin: 0;
+    padding: 0;
+  }
+}
