@@ -11,3 +11,4 @@ const post = new Post('Webpuck Post title', Logo);
 console.log('Post to String!', post.toString());
 
 console.log('JSON:', json);
+const getElem = 32;

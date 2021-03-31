@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin'); // Плагин для
 const MiniCSSExtrackPlugin = require('mini-css-extract-plugin'); // Плагин для CSS что бы сам CSS был отвельным файлом
 const OptimizedCssAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // Этот и следующий плагин нужны для минификации CSS
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
@@ -57,6 +58,7 @@ module.exports = {
     },
   },
   optimization: optimization(),
+  devtool: isDev ? 'source-map' : false,
   devServer: {
     port: 3030,
     open: true,
@@ -75,13 +77,14 @@ module.exports = {
         {
           from: path.resolve(__dirname, 'dev/static/images/*'),
           to: path.resolve(__dirname, 'dist/static/images/content'),
-          noErrorOnMissing: true
+          // noErrorOnMissing: true
         },
       ],
     }),
     new MiniCSSExtrackPlugin({
       filename: fileName('css'),
     }),
+    new ESLintPlugin(),
   ],
   // Webpack идет справа на лево
   // Loader это возможность добавление в функционал WebPack работу с другими типами файлов, к примеру CSS
