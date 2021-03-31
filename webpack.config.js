@@ -74,7 +74,8 @@ module.exports = {
       patterns: [
         {
           from: path.resolve(__dirname, 'dev/static/images/*'),
-          to: path.resolve(__dirname, 'dist'),
+          to: path.resolve(__dirname, 'dist/static/images/content'),
+          noErrorOnMissing: true
         },
       ],
     }),
@@ -117,18 +118,6 @@ module.exports = {
           },
         },
       },
-      // {
-      //   test: /\.js$/,
-      //   // exclude: path.resolve(__dirname, './node_modules'),
-      //   loader: {
-      //     loader: 'babel-loader',
-      //     options: {
-      //       presets: [
-      //         '@babel/preset-env'
-      //       ]
-      //     }
-      //   }
-      // }
     ],
   },
 };
