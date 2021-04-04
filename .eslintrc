@@ -1,7 +1,23 @@
 {
   "parser": "babel-eslint",
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "semi": [2, "always"],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+  }]
   },
   "env": {
     "es6": true,
