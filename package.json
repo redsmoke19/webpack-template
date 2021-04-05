@@ -13,6 +13,7 @@
     "not": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js"
   },
   "targets": "> 0.25%, not dead",
+  "homepage": "dist/",
   "author": "Oleg Tsyganov",
   "license": "ISC",
   "devDependencies": {

@@ -4,11 +4,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const PrettierPlugin = require('prettier-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, '../dev'),
   entry: {
-    main: ['../dev/static/js/index.js', '../dev/static/styles/styles.scss'],
+    main: ['./static/js/index.js', './static/styles/styles.scss'],
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -34,7 +35,7 @@ module.exports = {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
         options: {
-          name: './static/fonts/[name].[ext]',
+          name: '[path][name].[ext]',
         },
       },
       { test: /\.js$/, use: ['babel-loader'] },
@@ -46,6 +47,10 @@ module.exports = {
       filename: 'index.html',
       // favicon: paths.src + '/images/favicon.png',
       minify: true,
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'static/css/style.min.css',
+      chunkFilename: '[id].css',
     }),
     new CleanWebpackPlugin(),
     new ESLintPlugin({

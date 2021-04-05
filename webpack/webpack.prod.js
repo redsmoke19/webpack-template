@@ -21,7 +21,7 @@ module.exports = merge(common, {
             options: {
               importLoaders: 2,
               sourceMap: false,
-              modules: true,
+              // modules: true,
             },
           },
           'postcss-loader',
@@ -31,10 +31,10 @@ module.exports = merge(common, {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'static/css/style.min.css',
-      chunkFilename: '[id].css',
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: 'static/css/style.min.css',
+    //   chunkFilename: '[id].css',
+    // }),
     new ImageMinimizerPlugin({
       minimizerOptions: {
         plugins: [
@@ -47,9 +47,9 @@ module.exports = merge(common, {
   optimization: {
     minimize: true,
     minimizer: [new CssMinimizerPlugin(), '...'],
-    runtimeChunk: {
-      name: 'runtime',
-    },
+    // runtimeChunk: {
+    //   name: 'runtime',
+    // },
   },
   performance: {
     hints: false,
