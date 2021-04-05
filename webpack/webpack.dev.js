@@ -20,17 +20,14 @@ module.exports = merge(common, {
       {
         test: /\.(scss|css)$/,
         use: [
-          // 'style-loader',
-          // MiniCssExtractPlugin.loader,
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '../../',
-            },
-          },
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: { sourceMap: true, importLoaders: 1 },
+            options: {
+              sourceMap: true,
+              importLoaders: 1,
+              url: false,
+            },
           },
           { loader: 'postcss-loader', options: { sourceMap: true } },
           { loader: 'sass-loader', options: { sourceMap: true } },
