@@ -9,11 +9,14 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
   devServer: {
     historyApiFallback: true,
-    contentBase: path.resolve(__dirname, '../dist'),
+    // contentBase: path.resolve(__dirname, '../dist'),
     open: true,
     compress: true,
     hot: true,
     port: 8080,
+  },
+  optimization: {
+    runtimeChunk: 'single',
   },
   module: {
     rules: [
@@ -35,5 +38,5 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  // plugins: [new webpack.HotModuleReplacementPlugin()],
 });

@@ -5,16 +5,17 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const PrettierPlugin = require('prettier-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const HtmlWebpackPugPlugin = require('html-webpack-pug-plugin');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 module.exports = {
   context: path.resolve(__dirname, '../dev'),
   entry: {
     main: ['./static/js/index.js', './static/styles/styles.scss'],
+    vendor: './static/js/vendor.js'
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './',
+    publicPath: '',
     filename: 'static/js/[name].js',
   },
   resolve: {
@@ -40,31 +41,39 @@ module.exports = {
       //   },
       // },
       { test: /\.js$/, use: ['babel-loader'] },
-      { test: /\.pug$/, loader: 'pug-loader' }
+      { test: /\.pug$/, loader: 'pug-loader' },
+      {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
+        options: {
+          extract: true,
+          publicPath: '/'
+        }
+      }
     ],
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, '../dev/static/images/**'),
+          from: path.resolve(__dirname, '../dev/static/images/**/*.{jpg,jpeg,png}').replace(/\\/g, '/'),
           to: path.resolve(__dirname, '../dist'),
           // noErrorOnMissing: true
         },
         {
-          from: path.resolve(__dirname, '../dev/static/fonts/**'),
+          from: path.resolve(__dirname, '../dev/static/fonts/*').replace(/\\/g, '/'),
           to: path.resolve(__dirname, '../dist'),
           // noErrorOnMissing: true
         },
       ],
     }),
     new HTMLWebpackPlugin({
-      template: path.resolve(__dirname, '../dev//pug/index.pug'),
+      template: path.resolve(__dirname, '../dev/pug/index.pug'),
       filename: 'index.html',
       // favicon: paths.src + '/images/favicon.png',
       minify: false,
+      // inject: false
     }),
-    // new HtmlWebpackPugPlugin(),
     new MiniCssExtractPlugin({
       filename: 'static/css/style.min.css',
       chunkFilename: '[id].css',
@@ -74,5 +83,6 @@ module.exports = {
       formatter: 'table',
     }),
     new PrettierPlugin(),
+    new SpriteLoaderPlugin()
   ],
 };
